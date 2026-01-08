@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 00:36:30 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/01/06 17:17:59 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/01/08 14:52:58 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ BitcoinExchange::~BitcoinExchange()
 const BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
     if (this != &other)
+    {
+        this->dbase = other.dbase;
         this->data = other.data;
+    }
     return *this;
 }
 
@@ -40,10 +43,13 @@ bool BitcoinExchange::_checkDate(std::string date)
     if (date[4] != '-' || date[7] != '-')
         return false;
 
-    if ((date[5] == '1' && date[6] > '2') || date[5] > '1')
+    if (date[5] >= '1' && date[6] > '2')
         return false;
 
-    if ((date[8] == '3' && date[9] > '1') || date[8] > '3')
+    if (date[8] >= '3' && date[9] > '1')
+        return false;
+
+    if (date[5] == '0' && date[6] == '2' && date[8] >= '2' && date[9] > '9')
         return false;
     return true;
 }
@@ -103,6 +109,8 @@ void BitcoinExchange::execute(std::string input)
     std::string line, date;
     float value, final;
 
+    if (!file.is_open())
+        throw(BitcoinExchange::FileErrorException());
     std::getline(file, line);
     if (line != "date | value")
         throw(BitcoinExchange::NoHeaderException());
@@ -112,7 +120,7 @@ void BitcoinExchange::execute(std::string input)
         {
             if (line.find('|') == line.npos)
                 throw(BitcoinExchange::InvalidInputException("Divider character not found \"|\"."));
-            date = line.substr(0, line.find('|'));
+            date = line.substr(0, (line.find('|')));
             if (date.empty())
                 throw(BitcoinExchange::InvalidInputException("No date found."));
             value = std::atof(line.substr(line.find('|') + 1).c_str());
