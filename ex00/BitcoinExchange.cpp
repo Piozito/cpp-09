@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 00:36:30 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/01/08 14:52:58 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:31:29 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ const BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
     return *this;
 }
 
+bool BitcoinExchange::_checkLeapYear(int year)
+{
+    if(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
+        return true;
+    return false;
+}
+
+bool BitcoinExchange::_checkDay(int month, int day)
+{
+    if((month == 1 || month == 3 || month == 5 || month == 7 ||
+        month == 8 || month == 10 || month == 12) && day <= 31)
+        return true;
+    else if(day <= 30)
+        return true;
+    return false;
+}
+
 bool BitcoinExchange::_checkDate(std::string date)
 {
     if (date.size() != 10 && !(date.size() == 11 && date[date.size() - 1] == ' '))
@@ -43,14 +60,23 @@ bool BitcoinExchange::_checkDate(std::string date)
     if (date[4] != '-' || date[7] != '-')
         return false;
 
-    if (date[5] >= '1' && date[6] > '2')
+    if ((date[5] >= '1' && date[6] > '2') || (date[5] == '0' && date[6] == '0'))
         return false;
 
-    if (date[8] >= '3' && date[9] > '1')
+    if (this->_checkDay(std::atoi(date.substr(5, 6).c_str()), std::atoi(date.substr(8, 9).c_str())) == false)
         return false;
 
-    if (date[5] == '0' && date[6] == '2' && date[8] >= '2' && date[9] > '9')
-        return false;
+        
+    if (this->_checkLeapYear(std::atoi(date.substr(0, 4).c_str())) == true)
+    {
+        if (date[5] == '0' && date[6] == '2' && date[8] >= '2' && date[9] > '9')
+            return false;
+    }
+    else
+    {
+        if (date[5] == '0' && date[6] == '2' && date[8] >= '2' && date[9] > '8')
+            return false;
+    }
     return true;
 }
 

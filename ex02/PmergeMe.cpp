@@ -22,23 +22,11 @@ bool checkNum(char *str)
     return true;
 }
 
-char checkDup(char **av, ssize_t i)
-{
-    for(ssize_t j = 1; j < i; j++)
-    {
-        if(std::string(av[j]) == std::string(av[i]))
-            return false;
-    }
-    return true;
-}
-
 bool checkInput(char **av)
 {
     for(ssize_t i = 1; av[i]; i++)
     {
         std::string temp = av[i];
-        if(checkDup(av, i) == false)
-            return false;
         if(std::find(temp.begin(), temp.end(), '-') != temp.end())
             return false;
         if(checkNum(av[i]) == false)

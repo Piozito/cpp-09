@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 00:35:21 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/01/06 17:17:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:31:03 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ private:
     std::map<std::string, float> dbase;
     std::map<std::string, float> data;
 
+    bool _checkDay(int month, int day);
     bool _checkDate(std::string date);
     bool _checkValue(float value);
     float _findClosest(std::map<std::string, float>::iterator it);
+    bool _checkLeapYear(int year);
+
 
 public:
     BitcoinExchange();

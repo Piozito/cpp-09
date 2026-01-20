@@ -47,8 +47,8 @@ int main(int ac, char **av)
         deque_test.sort(av);
         std::cout << "Time to process a range of " << ac - 1 << " elements with std::deque : " << std::fixed << std::setprecision(5) << static_cast<double>(clock() - before_dq) / CLOCKS_PER_SEC<< " seconds." << std::endl;
 
-        //list_test.check();
-        //deque_test.check();
+        list_test.check();
+        deque_test.check();
     }
     catch(std::exception & e)
     {
