@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 14:56:44 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/01/09 12:26:17 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/02/24 09:40:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,14 @@ public:
     {
         const char *what() const throw()
         {
-            return "there should be atleast 2 numbers in the stack per operation, (2 2 +) not (2 + 2)";
+            return "There should be atleast 2 numbers in the stack per operation, (2 2 +) not (2 + 2)";
+        }
+    };
+	class InvalidSpaceException : public std::exception
+    {
+        const char *what() const throw()
+        {
+            return "Every argument should be separated by a space.";
         }
     };
 };

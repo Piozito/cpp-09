@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:02:32 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/01/12 09:15:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/02/24 09:40:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,41 +39,43 @@ double RPN::getResult(const char *input)
 
     while (input[i])
     {
-        if (std::isspace(input[i]))
+        if (std::isspace(input[i]) ||  i == 0)
         {
-            i++;
-            continue;
+			if(std::isspace(input[i]))
+				i++;
+			if (std::isdigit(input[i]))
+        	    numbers.push(input[i] - '0');
+        	else if (input[i] == '/' || input[i] == '+' || input[i] == '-' || input[i] == '*')
+        	{
+        	    if (numbers.size() < 2)
+        	        throw(RPN::IncorrectAmountofNumbersException());
+			
+        	    num2 = numbers.top();
+        	    numbers.pop();
+        	    num1 = numbers.top();
+        	    numbers.pop();
+			
+        	    // std::cout << "Debug: " << num1 << input[i] << num2 << std::endl; // debug
+			
+        	    if (input[i] == '+')
+        	        numbers.push(num1 + num2);
+        	    else if (input[i] == '-')
+        	        numbers.push(num1 - num2);
+        	    else if (input[i] == '*')
+        	        numbers.push(num1 * num2);
+        	    else if (input[i] == '/')
+        	    {
+        	        if (num2 == 0)
+        	            throw(RPN::DivisionByZeroException());
+        	        numbers.push(num1 / num2);
+        	    }
+        	}
+        	else
+        	    throw(RPN::InvalidCharacterException(std::string(1, input[i])));
+        	i++;
         }
-        else if (std::isdigit(input[i]))
-            numbers.push(input[i] - '0');
-        else if (input[i] == '/' || input[i] == '+' || input[i] == '-' || input[i] == '*')
-        {
-            if (numbers.size() < 2)
-                throw(RPN::IncorrectAmountofNumbersException());
-
-            num2 = numbers.top();
-            numbers.pop();
-            num1 = numbers.top();
-            numbers.pop();
-
-            // std::cout << "Debug: " << num1 << input[i] << num2 << std::endl; // debug
-
-            if (input[i] == '+')
-                numbers.push(num1 + num2);
-            else if (input[i] == '-')
-                numbers.push(num1 - num2);
-            else if (input[i] == '*')
-                numbers.push(num1 * num2);
-            else if (input[i] == '/')
-            {
-                if (num2 == 0)
-                    throw(RPN::DivisionByZeroException());
-                numbers.push(num1 / num2);
-            }
-        }
-        else
-            throw(RPN::InvalidCharacterException(std::string(1, input[i])));
-        i++;
+		else
+			throw(RPN::InvalidSpaceException());
     }
     if (numbers.size() != 1)
         throw(RPN::IncorrectAmountOfArgumentsException());
