@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 00:36:30 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/01/20 16:31:29 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/03/09 13:40:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,46 @@ bool BitcoinExchange::_checkDay(int month, int day)
     return false;
 }
 
+bool BitcoinExchange::_checkNumber(std::string date)
+{
+    for(size_t i = 0; i < date.size() - 1; i++)
+    {
+        if(!std::isdigit(date[i]))
+        {
+            if(i == 4 || i == 7)
+                continue;
+            return false;
+        }
+    }
+    return true;
+}
+
 bool BitcoinExchange::_checkDate(std::string date)
 {
     if (date.size() != 10 && !(date.size() == 11 && date[date.size() - 1] == ' '))
         return false;
-    if (date[4] != '-' || date[7] != '-')
+    
+    int year = std::atoi(date.substr(0,4).c_str());
+    int month = std::atoi(date.substr(5,6).c_str());
+    int day = std::atoi(date.substr(8,9).c_str());
+
+    if (!this->_checkNumber(date))
         return false;
 
-    if ((date[5] >= '1' && date[6] > '2') || (date[5] == '0' && date[6] == '0'))
+    if (month > 12 || month < 1)
         return false;
 
-    if (this->_checkDay(std::atoi(date.substr(5, 6).c_str()), std::atoi(date.substr(8, 9).c_str())) == false)
+    if (this->_checkDay(month, day) == false)
         return false;
 
-        
-    if (this->_checkLeapYear(std::atoi(date.substr(0, 4).c_str())) == true)
+    if (this->_checkLeapYear(year) == true)
     {
-        if (date[5] == '0' && date[6] == '2' && date[8] >= '2' && date[9] > '9')
+        if (month == 2 && day > 29)
             return false;
     }
     else
     {
-        if (date[5] == '0' && date[6] == '2' && date[8] >= '2' && date[9] > '8')
+        if (month == 2 && day > 28)
             return false;
     }
     return true;

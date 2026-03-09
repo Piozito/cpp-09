@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 14:56:44 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/01/09 12:26:17 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/01/20 20:34:36 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ public:
         const char *what() const throw()
         {
             return "there should be atleast 2 numbers in the stack per operation, (2 2 +) not (2 + 2)";
+        }
+    };
+    class InvalidInputException : public std::exception
+    {
+        const char *what() const throw()
+        {
+            return "Input should only incluse numbers between 0 and 9 separated by spaces";
         }
     };
 };
