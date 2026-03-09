@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:02:32 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/03/09 13:50:05 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/03/09 13:54:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,17 @@ RPN &RPN::operator=(const RPN &other)
 double RPN::getResult(const char *input)
 {
     std::stack<double> numbers;
-    ssize_t i = 0;
+    size_t i = 0;
     double num1, num2;
 
     while (input[i])
     {
         if (std::isspace(input[i]) ||  i == 0)
         {
-			if(std::isspace(input[i]))
-				i++;
+			while (std::isspace(input[i]))
+                i++;
+            if(i >= std::string(input).size())
+                break;
 			if (std::isdigit(input[i]))
         	    numbers.push(input[i] - '0');
         	else if (input[i] == '/' || input[i] == '+' || input[i] == '-' || input[i] == '*')
