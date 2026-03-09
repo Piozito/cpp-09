@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 00:36:30 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/03/09 13:40:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/03/09 14:17:57 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,16 @@ float BitcoinExchange::_findClosest(std::map<std::string, float>::iterator it)
 {
     std::map<std::string, float>::iterator closest;
 
-    closest = this->dbase.lower_bound(it->first);
-    if (closest->first == it->first)
-        return (closest->second * it->second);
-    else if (closest == this->dbase.begin())
-        throw(BitcoinExchange::InvalidInputException("No earlier date found."));
+    if(std::atoi(it->first.substr(0,4).c_str()) > 2022)
+        closest = this->dbase.end();
+    else
+    {
+        closest = this->dbase.lower_bound(it->first);
+        if (closest->first == it->first)
+            return (closest->second * it->second);
+        else if (closest == this->dbase.begin())
+            throw(BitcoinExchange::InvalidInputException("No earlier date found."));
+    }
     --closest;
     return closest->second * it->second;
 }
