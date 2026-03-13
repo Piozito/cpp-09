@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 00:35:21 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/03/09 13:34:10 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:22:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ private:
     float _findClosest(std::map<std::string, float>::iterator it);
     bool _checkLeapYear(int year);
     bool _checkNumber(std::string date);
+    bool _isNumber(std::string line);
 
 
 public:

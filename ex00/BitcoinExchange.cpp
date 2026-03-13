@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 00:36:30 by aaleixo-          #+#    #+#             */
-/*   Updated: 2026/03/09 14:17:57 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:23:12 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,16 @@ void BitcoinExchange::prepDatabase()
     db.close();
 }
 
+bool BitcoinExchange::_isNumber(std::string line)
+{
+    for(size_t i = 0; i < line.size(); i++)
+    {
+        if(!std::isdigit(line[i]) && !std::isspace(line[i]) && line[i] != '.')
+            return false;
+    }
+    return true;
+}
+
 void BitcoinExchange::execute(std::string input)
 {
     std::ifstream file(input.c_str());
@@ -172,7 +182,10 @@ void BitcoinExchange::execute(std::string input)
             date = line.substr(0, (line.find('|')));
             if (date.empty())
                 throw(BitcoinExchange::InvalidInputException("No date found."));
-            value = std::atof(line.substr(line.find('|') + 1).c_str());
+            if(_isNumber(line.substr(line.find('|') + 1)))
+                value = std::atof(line.substr(line.find('|') + 1).c_str());
+            else
+                throw(BitcoinExchange::InvalidInputException(line.substr(line.find('|') + 1).c_str()));
 
             if (this->_checkDate(date) == false)
                 throw(BitcoinExchange::InvalidInputException("Invalid date: \"" + date + "\" (YYYY-MM-DD)"));
